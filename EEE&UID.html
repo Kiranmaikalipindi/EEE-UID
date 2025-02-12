@@ -1,0 +1,397 @@
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Intelli Domotics</title>
+        <style>
+            body {
+                font-family: 'Poppins', sans-serif;
+                margin: 0;
+                padding: 0;
+                background:#ffffff;
+                text-align: center;
+            }
+            .home-container {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                height: 100vh;
+                background-image: url('https://i.imgur.com/QVSxA7L.png');
+                background-position: center -350px;
+                background-repeat: no-repeat;
+                background-size: 70%; /* Zoomed out background image */
+            }
+            /* Heading Position */
+            .home-container h1 {
+                font-size: 50px;
+                font-family: 'Playfair Display', serif; /* Fancy classic font */
+                color: #2C3E50;
+                position: absolute;
+                top: 300px; /* Moves heading to the top */
+                left: 50%;
+                transform: translateX(-50%);
+            }
+
+            .home-container h1 {
+                font-size: 86px;
+                margin-bottom: 20px;
+            }
+            .home-container a {
+                display: inline-block;
+                background: #901704;
+                color: white;
+                padding: 15px 30px;
+                font-size: 20px;
+                text-decoration: none;
+                border-radius: 8px;
+                position: absolute;
+                bottom: 20px;
+                right: 20px;
+            }
+
+            .container {
+                display: none;
+                width: 100vw; /* Full width */
+                height: 100vh; /* Full height */
+                padding: 20px;
+                text-align: left;
+                display: flex;
+                position: fixed;
+                top: 0;
+                left: 0;
+                background: white;
+
+
+            }
+            .home-container a:hover {
+                background: #a0522d;
+            }
+
+        
+            .sidebar {
+                width: 250px;
+                height: 90.5vh;
+                background: white;
+                padding: 20px;
+                box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.3), -5px -5px 15px rgba(0, 0, 0, 0.3);
+            }
+            .sidebar a {
+                display: block;
+                color: #333;
+                text-decoration: none;
+                padding: 10px 0;
+                font-size: 18px;
+                cursor: pointer;
+            }
+            .sidebar a:hover {
+                color: #901704;
+            }
+            /* Content Section */
+            /* Content Section */
+            .content-section {
+                flex-grow: 1;
+                padding: 20px;
+                position: relative;
+                display: flex;
+                flex-direction: column;
+                align-items: center; /* Centers content */
+                justify-content: flex-start;
+                background-image: url('https://i.imgur.com/ROOTW3W.jpeg');
+                background-size: cover;
+                border-radius: 1px;
+                box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.3), -5px -5px 15px rgba(0, 0, 0, 0.3);
+                max-width: 78%; /* Reduce width from right */
+                height: 90.5vh; /* ✅ Slightly smaller height */
+                min-height: 500px; /* Prevents it from shrinking too much */
+                overflow: hidden;
+                font-size: 25px;
+            }
+
+            /* Scrollable Content Wrapper */
+            .content {
+                display: none;
+                width: 100%;
+                height: 100%; /* Takes full height of the content-section */
+                padding: 20px;
+                box-sizing: border-box;
+                position: relative;
+                opacity: 0;
+                transition: opacity 0.5s ease-in-out;
+                overflow-y: auto; /* ✅ Enables vertical scrolling when needed */
+            }
+
+            /* Ensure the active content block appears properly */
+            .content.active {
+                display: block;
+                opacity: 1;
+            }
+
+
+            .navigation {
+                position: absolute;
+                bottom: 10px;
+                width: 90%;
+                display: flex;
+                justify-content: space-between;
+                padding: 10px;
+            }
+            .navigation button:last-child { 
+                margin-right: 5px; /* Moves "Next" button slightly inside */
+            }
+            .navigation button {
+                padding: 10px 40px;
+                font-size: 16px;
+                border: none;
+                background: #982b03;
+                color: white;
+                border-radius: 5px;
+                cursor: pointer;
+            }
+            .navigation button:hover {
+                background: #901704;
+            }
+
+            .left-bottom-text {
+            position: absolute;
+            bottom: 20px;
+            left: 20px;
+            font-size: 30px;
+            font-weight: bold;
+            color: black;
+            text-align: left;
+            font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+            }
+        
+        </style>
+    </head>
+    <body onload="showHomeFirst()">
+        <div class="home-container" id="homePage">
+            <h1>Intelli Domotics</h1><br><h1 style = "font-size:36px; top: 450px;">22AIE114 & 22AIE115</h1> 
+            <a href="#" onclick="showInfoPage()">Next</a>
+            <div class="left-bottom-text">
+                CB.SC.U4AIE24103 - Ananya<br>
+                CB.SC.U4AIE24119 - Kiranmai<br>
+                CB.SC.U4AIE24120 - Sudeshna<br>
+                CB.SC.U4AIE24163 - Devi Sri
+            </div>
+        </div>
+        <div class="container" id="infoPage">
+            <aside class="sidebar">
+                <h1>Intelli Domotics</h1>
+                <a href="#" onclick="showHomePage()">Home</a>
+                <a onclick="showContent('Introduction')">Introduction</a>
+                <a onclick="showContent('Literature Review')">Literature Review</a>
+                <a onclick="showContent('Research Gap')">Research Gap</a>
+                <a onclick="showContent('Problem Statement')">Problem Statement</a>
+                <a onclick="showContent('Objectives')">Objectives</a>
+                <a onclick="showContent('Methodology')">Methodology</a>
+                <a onclick="showContent('Components')">Components</a>
+                <a onclick="showContent('Conclusion')">Conclusion</a>
+                <a onclick="showContent('Future Scope')">Future Scope</a>
+            </aside>
+            <main class="content-section">
+                <div class="content active" id="Introduction">
+                    <h2>Introduction</h2>
+                    <p>Smart homes integrate AI and IoT to improve efficiency, security, and convenience. Intelli Domotics leverages these technologies to automate tasks, optimize energy use, and enhance safety.</p>
+                    <h4>Why Intelli Domotics?</h4> 
+                    <p>Traditional automation systems follow fixed rules, leading to inefficiencies. AI-powered automation adapts to user behavior and environmental conditions, ensuring better energy savings and security.</p>
+                    <h4>Key Features</h4>
+                    <p><ul type="disc"><li>Energy Optimization: AI minimizes power consumption.</li>
+                    <li>Smart Security: Detects unusual activity and enhances safety.</li>
+                    <li>Adaptive Automation: Adjusts lighting, temperature, and appliances.</li>
+                    <li>Remote Monitoring: Allows control from anywhere via IoT.</li>
+                    <li>Learning System: AI improves automation based on user habits.</li></ul></p>
+                    <p>With <b>AI-driven intelligence</b> and <b>IoT connectivity, Intelli Domotics</b> provides an <b>efficient, scalable, and cost-effective</b> smart home solution</p>
+    </div>
+                <div class="content" id="Literature Review">
+                    <h2>Literature Review</h2>
+                    <p>The advancements in AI-based home automation emphasize intelligent control systems for energy savings, security enhancements, and user adaptability. The following table highlights key studies in this domain:</p>
+                <table border="1" cellpadding="25px" cellspacing="3px">
+                    <tr> <th>
+    S.No	
+    </th>
+    <th>
+    Title
+    </th>
+    <th>
+    Year
+    </th>
+    <th>	
+    Methodology
+    </th>
+    <th>
+    Key Contributions
+    </th>
+    </tr>
+    <tr>
+    <td>
+    1
+    </td>
+    <td>	
+    Evolution of AI in Smart Home Systems: A Comprehensive Review</td><td>2025</td><td>	Systematic Literature Review</td><td>	Explores historical progression and modern AI advancements in smart home automation. Covers security, automation efficiency, and AI adaptability.</td></tr>
+    <tr>
+    <td>2</td><td>	AI Integration: Key Advancements in Smart Home Technology</td><td>2024</td><td>	AI & IoT Analysis</td><td>	Discusses AI-driven automation, security, and energy management techniques. Highlights real-time decision-making and remote control capabilities.</td>
+    </tr>
+    <tr>
+    <td>3</td><td>	A Secured Deep Learning-Based Smart Home Automation System</td><td>	2023</td><td>	Deep Learning</td><td>	Proposes an AI-powered, IoT-integrated home automation framework with enhanced security. Includes AI-based anomaly detection, self-learning automation, and cybersecurity measures.</td>
+
+                </table>
+                </div>
+                <div class="content" id="Research Gap">
+                    <h2>Research Gap</h2>
+                    <p ul type="disc">
+    <li>Current smart home systems lack real-time adaptability based on user behavior.</li>
+    <li>Ineffieciencies in energy management.</li>
+    <li>Inefficiencies in current priority-based scheduling of appliances.</li>
+    <li>Need for improved IoT-based monitoring and predictive analytics.</li>
+    <li>Absence of AI-driven security threat detection.</li></p>
+                </div>
+                <div class="content" id="Problem Statement">
+                    <h2>Problem Statement</h2>
+                    <p>Traditional smart home automation systems rely on <b>predefined rules</b>, leading to inefficiencies in energy consumption and security management. <b>Intelli Domotics </b>bridges this gap by integrating<b> AI-driven adaptability</b>, predictive analytics, and real-time decision-making to optimize appliance control and security monitoring.</p>
+                </div>
+                <div class="content" id="Objectives">
+                    <h2>Objectives</h2>
+                    <p ul type="disc">
+            <li><strong>Develop an AI-driven smart home automation system using ESP-32:</strong> 
+                This system will utilize the ESP-32 microcontroller for real-time control and automation of household appliances, ensuring seamless communication between devices and efficient energy management.</li>
+            
+            <li><strong>Integrate real-time learning to adjust device scheduling dynamically:</strong> 
+                By implementing machine learning algorithms, the system will analyze user habits and environmental factors to adjust appliance usage dynamically, reducing manual intervention and energy wastage.</li>
+            
+            <li><strong>Provide remote monitoring and control via IoT:</strong> 
+                An IoT-enabled platform will allow users to monitor and control home appliances remotely, providing real-time status updates, notifications, and an intuitive interface for seamless interaction.</li>
+            
+            <li><strong>Implement AI-based predictive analytics for better energy utilization:</strong> 
+                The system will use AI-driven data analysis to predict optimal energy usage, automate device control based on consumption patterns, and suggest energy-saving strategies to enhance efficiency and reduce costs.</li>
+        
+                </div>
+                <div class="content" id="Methodology">
+                    <h2>Methodology</h2>
+    <p ><ol type="1">
+    <li><h3>Garage Automation:</h3></li>
+    <p ><ul type="circle">
+    <li><b>Vehicle Detection:</b> IR sensor module.</li>
+    <li><b>Obstacle Safety:</b> IR sensor to detect objects during shutter closure.</li>
+    <li><b>Relay Module:</b> Controls shutter motor and lighting.</li></ul>
+    </p>
+
+    <li><h3>Room 1 (Beside Garage):</h3></li>
+    <p><ul type="circle">
+    <li><b>Object Detection:</b> PIR motion sensor for automatic door access.</li>
+    <li><b>Light Control:</b>LDR sensor for ambient light adjustment.</li>
+    </ul>
+    </p>
+    <li><h3>Room 2 (Above Room 1):</h3></li>
+    <p><ul type="circle">
+    <li><b>AI-Driven Fan Speed Control:</b> Potentiometer for manual adjustment and DHT11/DHT22 for automatic speed modulation.</li></ul>
+    </p>
+    <li><h3>Garden Automation:</h3></li>
+    <p><ul type="circle">
+    <li><b>Soil Moisture Monitoring: </b>Smart soil moisture sensor for automated irrigation.</li>
+    <li><b>Water Pump:</b> AI-controlled 5V submersible pump for optimized watering schedules.</li></ul>
+    </p>
+    <li><h3>IoT & Connectivity:</h3></li>
+    <p><ul type="circle">
+
+    <li>MQTT	(Message Queuing Telemetry Transport)-based real-time monitoring and remote access.</li>
+    <li>Cloud-based AI analytics for enhanced automation adaptability.</li></ul>
+    </p>
+    <li><h3>AI Integration in Automation:</h3></li>
+    <p><ul type="circle">
+
+    <li><b>Machine Learning for Predictive Analysis:</b> AI algorithms analyze past data to predict optimal appliance usage and reduce energy waste.</li>
+
+    <li><b>Adaptive Security:</b> 
+    AI-enabled surveillance learns movement patterns and detects anomalies, triggering alerts.</li>
+    <li><b>Smart Energy Optimization:</b>AI continuously learns household patterns and adjusts appliance schedules to maximize energy efficiency.</li>
+    <li><b>Real-Time AI Decision Making:</b> AI dynamically prioritizes tasks based on user behavior and environmental changes.</li>
+    </ul>
+    </ol>
+    </p>
+                </div>
+    <div class="content" id="Components">
+    <table width="1500px" height="700px" style="font-size:30px">
+    <tr ><td>
+    <img src="C:\Users\Sudeshna Kalluri\OneDrive\Pictures\Screenshots\Screenshot 2025-02-10 144856.png"  width="200px" height="200px">ESP32</td>
+    <td>
+    <img src="C:\Users\Sudeshna Kalluri\OneDrive\Pictures\Screenshots\Screenshot 2025-02-10 145442.png" width="200px" height="200px">IR sensor</td>
+    <td>
+    <img src="C:\Users\Sudeshna Kalluri\OneDrive\Pictures\Screenshots\Screenshot 2025-02-10 150604.png" width="200px"height="200px">Relay Module</td>
+    </tr>
+    <tr>
+    <td>
+    <img src="C:\Users\Sudeshna Kalluri\OneDrive\Pictures\Screenshots\Screenshot 2025-02-10 150818.png" width="200px" height="200px">L298N Driver</td>
+    <td>
+    <img src="C:\Users\Sudeshna Kalluri\OneDrive\Pictures\Screenshots\Screenshot 2025-02-10 145933.png" width="200px" height="200px">PIR Motion sensor</td>
+    <td>
+    <img src="C:\Users\Sudeshna Kalluri\OneDrive\Pictures\Screenshots\Screenshot 2025-02-10 150036.png" width="200px" height="200px">DHT11 sensor</td>
+    </tr>
+    <tr>
+    <td>
+    <img src="C:\Users\Sudeshna Kalluri\OneDrive\Pictures\Screenshots\Screenshot 2025-02-10 150142.png" width="200px" height="200px">SoilMoisture sensor</td>
+    <td>
+    <img src="C:\Users\Sudeshna Kalluri\OneDrive\Pictures\Screenshots\Screenshot 2025-02-10 150256.png" width="200px" height="200px">Potentiometer</td>
+    <td>
+    <img src="C:\Users\Sudeshna Kalluri\OneDrive\Pictures\Screenshots\Screenshot 2025-02-10 150418.png" width="200px" height="200px">DC motor</td> 
+    </table>
+
+    </div>
+    <div class="content" id="Conclusion">
+    <h2>Conclusion</h2>
+    <p>The Intelli Domotics project is currently in the development phase, focusing on implementing AI-driven smart home automation with IoT integration. The primary objective is to enhance energy efficiency, security, and intelligent automation scheduling. The project involves designing the system architecture, selecting components, and testing core functionalities to ensure seamless integration and optimized performance. Through real-time automation and AI-based decision-making, the system aims to provide a more efficient, secure, and adaptive smart home experience.</p>
+    </div>
+    <div class="content" id="Future Scope">
+    <h2>Future Scope</h2>
+    <p> The future scope of Intelli Domotics is centered around making the system more intelligent, adaptable, and scalable. With advancements in AI automation, energy optimization, and security, Intelli Domotics can evolve into a fully autonomous home automation system that offers maximum efficiency, security, and convenience to users.<br>
+
+By continuously improving AI learning, integrating more smart devices, and enhancing cloud-based insights, the project can revolutionize how smart homes operate, paving the way for a more sustainable and automated future.</p>
+    </div>
+    <div class="navigation">
+                    <button onclick="previousSection()">Previous</button>
+                    <button onclick="nextSection()">Next</button>
+                </div>
+            </main>
+        </div>
+        <script>
+        function showHomeFirst() {
+        document.getElementById('homePage').style.display = 'flex';  // Show home first
+        document.getElementById('infoPage').style.display = 'none';  // Hide content page
+    }
+
+    function showInfoPage() {
+        document.getElementById('homePage').style.display = 'none';  // Hide home page
+        document.getElementById('infoPage').style.display = 'flex';  // Show main content
+    }
+
+    function showHomePage() {
+        document.getElementById('infoPage').style.display = 'none';  // Hide main content
+        document.getElementById('homePage').style.display = 'flex';  // Show home page again
+    }
+
+
+            function showContent(section) {
+                document.querySelectorAll('.content').forEach(content => {
+                    content.classList.remove('active');
+                });
+                document.getElementById(section).classList.add('active');
+            }
+            let sections = ['Introduction', 'Literature Review', 'Research Gap', 'Problem Statement', 'Objectives','Methodology','Components','Conclusion','Future Scope'];
+            let currentIndex = 0;
+            function nextSection() {
+                if (currentIndex < sections.length - 1) {
+                    currentIndex++;
+                    showContent(sections[currentIndex]);
+                }
+            }
+            function previousSection() {
+                if (currentIndex > 0) {
+                    currentIndex--;
+                    showContent(sections[currentIndex]);
+                }
+            }
+        </script>
+    </body>
+    </html>
