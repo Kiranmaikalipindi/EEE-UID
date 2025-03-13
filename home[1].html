@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home Automation Dashboard</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            text-align: center;
+        }
+        .container {
+            max-width: 600px;
+            margin: 20px auto;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        h2 {
+            color: #333;
+        }
+        .status {
+            padding: 10px;
+            margin: 10px;
+            border-radius: 5px;
+        }
+        .garage { background-color: #ffcccb; }
+        .room1 { background-color: #d4edda; }
+        .room2 { background-color: #cce5ff; }
+        .status span {
+            font-weight: bold;
+            color: #333;
+        }
+        .btn {
+            padding: 10px 20px;
+            border: none;
+            background-color: #007bff;
+            color: white;
+            cursor: pointer;
+            border-radius: 5px;
+            margin-top: 10px;
+        }
+        .btn:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h2>🏠 Home Automation Dashboard</h2>
+
+        <div class="status garage">
+            <h3>🚗 Garage</h3>
+            <p>Vehicle Detected: <span id="vehicleStatus">No</span></p>
+            <p>Obstacle Detected: <span id="obstacleStatus">No</span></p>
+            <button class="btn" onclick="toggleGarage()">Toggle Garage Door</button>
+        </div>
+
+        <div class="status room1">
+            <h3>💡 Room 1</h3>
+            <p>Motion Detected: <span id="motionStatus">No</span></p>
+            <p>Darkness Detected: <span id="darknessStatus">No</span></p>
+            <p>Light Status: <span id="lightStatus">OFF</span></p>
+            <button class="btn" onclick="toggleLight()">Toggle Light</button>
+        </div>
+
+        <div class="status room2">
+            <h3>🌡️ Room 2</h3>
+            <p>Humidity Level: <span id="humidityStatus">50%</span></p>
+            <p>Fan Status: <span id="fanStatus">OFF</span></p>
+            <button class="btn" onclick="toggleFan()">Toggle Fan</button>
+        </div>
+    </div>
+
+    <script>
+        function toggleGarage() {
+            let vehicleStatus = document.getElementById("vehicleStatus");
+            let obstacleStatus = document.getElementById("obstacleStatus");
+
+            if (vehicleStatus.innerText === "No") {
+                vehicleStatus.innerText = "Yes";
+                obstacleStatus.innerText = "No";
+                alert("Garage Door Opened!");
+            } else {
+                vehicleStatus.innerText = "No";
+                alert("Garage Door Closed!");
+            }
+        } 
+
+        function toggleLight() {
+            let motionStatus = document.getElementById("motionStatus");
+            let darknessStatus = document.getElementById("darknessStatus");
+            let lightStatus = document.getElementById("lightStatus");
+
+            if (motionStatus.innerText === "No" && darknessStatus.innerText === "No") {
+                motionStatus.innerText = "Yes";
+                darknessStatus.innerText = "Yes";
+                lightStatus.innerText = "ON";
+                alert("Room 1 Light Turned ON!");
+            } else {
+                motionStatus.innerText = "No";
+                darknessStatus.innerText = "No";
+                lightStatus.innerText = "OFF";
+                alert("Room 1 Light Turned OFF!");
+            }
+        }
+
+        function toggleFan() {
+            let humidityStatus = document.getElementById("humidityStatus");
+            let fanStatus = document.getElementById("fanStatus");
+
+            if (fanStatus.innerText === "OFF") {
+                humidityStatus.innerText = "High";
+                fanStatus.innerText = "ON";
+                alert("Fan Turned ON!");
+            } else {
+                humidityStatus.innerText = "Low";
+                fanStatus.innerText = "OFF";
+                alert("Fan Turned OFF!");
+            }
+        }
+    </script>
+
+</body>
+</html>
