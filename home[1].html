@@ -1,128 +1,172 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Home Automation Dashboard</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f4f4f4;
-            text-align: center;
-        }
-        .container {
-            max-width: 600px;
-            margin: 20px auto;
-            background: white;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        }
-        h2 {
-            color: #333;
-        }
-        .status {
-            padding: 10px;
-            margin: 10px;
-            border-radius: 5px;
-        }
-        .garage { background-color: #ffcccb; }
-        .room1 { background-color: #d4edda; }
-        .room2 { background-color: #cce5ff; }
-        .status span {
-            font-weight: bold;
-            color: #333;
-        }
-        .btn {
-            padding: 10px 20px;
-            border: none;
-            background-color: #007bff;
-            color: white;
-            cursor: pointer;
-            border-radius: 5px;
-            margin-top: 10px;
-        }
-        .btn:hover {
-            background-color: #0056b3;
-        }
-    </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Intelli Domotics</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(to right, #e3f2fd, #ffffff);
+      color: #333;
+      display: flex;
+      flex-direction: column;
+      height: 100vh;
+    }
+
+    header {
+      background-color: #1976d2;
+      color: white;
+      padding: 20px;
+      text-align: center;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+    }
+
+    main {
+      display: flex;
+      flex: 1;
+      overflow: hidden;
+    }
+
+    .sidebar {
+      width: 35%;
+      background-color: #f5f5f5;
+      padding: 25px;
+      box-shadow: inset -1px 0 5px rgba(0,0,0,0.05);
+    }
+
+    .sidebar h2 {
+      margin-top: 0;
+      font-size: 20px;
+      border-bottom: 2px solid #2196f3;
+      padding-bottom: 8px;
+    }
+
+    .device {
+      background: white;
+      margin-top: 15px;
+      padding: 15px;
+      border-left: 5px solid #1976d2;
+      border-radius: 5px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    }
+
+    .device strong {
+      display: block;
+      font-size: 16px;
+      margin-bottom: 5px; 
+    }
+
+    .content {
+      flex: 1;
+      padding: 30px;
+    }
+
+    .button {
+      display: inline-block;
+      padding: 12px 25px;
+      font-size: 16px;
+      background-color: #2196f3;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+
+    .button:hover {
+      background-color: #1565c0;
+    }
+
+    .status-box {
+      margin-top: 30px;
+      background: #ffffff;
+      border-left: 5px solid #2196f3;
+      padding: 20px;
+      border-radius: 8px;
+      font-size: 18px;
+      line-height: 1.6;
+      white-space: pre-wrap;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+      min-height: 150px;
+    }
+
+    footer {
+      text-align: center;
+      padding: 15px;
+      background: #f1f1f1;
+      font-size: 14px;
+      color: #777;
+    }
+  </style>
 </head>
 <body>
+  <header>
+    <h1>🏠 Intelli Domotics Dashboard</h1>
+    <p>Real-time Arduino UNO Monitoring</p>
+  </header>
 
-    <div class="container">
-        <h2>🏠 Home Automation Dashboard</h2>
-
-        <div class="status garage">
-            <h3>🚗 Garage</h3>
-            <p>Vehicle Detected: <span id="vehicleStatus">No</span></p>
-            <p>Obstacle Detected: <span id="obstacleStatus">No</span></p>
-            <button class="btn" onclick="toggleGarage()">Toggle Garage Door</button>
-        </div>
-
-        <div class="status room1">
-            <h3>💡 Room 1</h3>
-            <p>Motion Detected: <span id="motionStatus">No</span></p>
-            <p>Darkness Detected: <span id="darknessStatus">No</span></p>
-            <p>Light Status: <span id="lightStatus">OFF</span></p>
-            <button class="btn" onclick="toggleLight()">Toggle Light</button>
-        </div>
-
-        <div class="status room2">
-            <h3>🌡️ Room 2</h3>
-            <p>Humidity Level: <span id="humidityStatus">50%</span></p>
-            <p>Fan Status: <span id="fanStatus">OFF</span></p>
-            <button class="btn" onclick="toggleFan()">Toggle Fan</button>
-        </div>
+  <main>
+    <div class="sidebar">
+      <h2> Connected Devices</h2>
+      <div class="device">
+        <strong>Garage</strong>
+        IR Sensor + Servo Motor<br>
+        Detects object, opens shutter
+      </div>
+      <div class="device">
+        <strong>Room 1</strong>
+        LDR Sensor + Light<br>
+        Auto control lights based on brightness
+      </div>
+      <div class="device">
+        <strong>Room 2</strong>
+        DHT22 Sensor + DC Fan<br>
+        Suggests to turn on Fan when temparature is high
+      </div>
     </div>
 
-    <script>
-        function toggleGarage() {
-            let vehicleStatus = document.getElementById("vehicleStatus");
-            let obstacleStatus = document.getElementById("obstacleStatus");
+    <div class="content">
+      <button class="button" onclick="connect()">🔌 Connect to Arduino</button>
 
-            if (vehicleStatus.innerText === "No") {
-                vehicleStatus.innerText = "Yes";
-                obstacleStatus.innerText = "No";
-                alert("Garage Door Opened!");
-            } else {
-                vehicleStatus.innerText = "No";
-                alert("Garage Door Closed!");
-            }
-        } 
+      <div id="status" class="status-box">
+        Click "Connect" to start reading live data...
+      </div>
+    </div>
+  </main>
 
-        function toggleLight() {
-            let motionStatus = document.getElementById("motionStatus");
-            let darknessStatus = document.getElementById("darknessStatus");
-            let lightStatus = document.getElementById("lightStatus");
+  <footer>
+    © 2025 Intelli Domotics Project
+  </footer>
 
-            if (motionStatus.innerText === "No" && darknessStatus.innerText === "No") {
-                motionStatus.innerText = "Yes";
-                darknessStatus.innerText = "Yes";
-                lightStatus.innerText = "ON";
-                alert("Room 1 Light Turned ON!");
-            } else {
-                motionStatus.innerText = "No";
-                darknessStatus.innerText = "No";
-                lightStatus.innerText = "OFF";
-                alert("Room 1 Light Turned OFF!");
-            }
+  <script>
+    let port, reader;
+
+    async function connect() {
+      try {
+        port = await navigator.serial.requestPort();
+        await port.open({ baudRate: 9600 });
+
+        const decoder = new TextDecoderStream();
+        const inputDone = port.readable.pipeTo(decoder.writable);
+        reader = decoder.readable.getReader();
+
+        document.getElementById('status').textContent = " Connected. Waiting for data...";
+
+        let statusText = "";
+        while (true) {
+          const { value, done } = await reader.read();
+          if (done) break;
+          if (value) {
+            statusText += value;
+            document.getElementById("status").textContent = statusText;
+          }
         }
-
-        function toggleFan() {
-            let humidityStatus = document.getElementById("humidityStatus");
-            let fanStatus = document.getElementById("fanStatus");
-
-            if (fanStatus.innerText === "OFF") {
-                humidityStatus.innerText = "High";
-                fanStatus.innerText = "ON";
-                alert("Fan Turned ON!");
-            } else {
-                humidityStatus.innerText = "Low";
-                fanStatus.innerText = "OFF";
-                alert("Fan Turned OFF!");
-            }
-        }
-    </script>
-
+      } catch (error) {
+        document.getElementById('status').textContent = "❌ Error: " + error;
+      }
+    }
+  </script>
 </body>
 </html>
