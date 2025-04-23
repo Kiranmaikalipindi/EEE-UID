@@ -1,74 +1,71 @@
+#include <Servo.h>
 #include <DHT.h>
-#include <Arduino.h>
-#define IR_SENSOR_VEHICLE 2  // IR Sensor for vehicle detection
-#define IR_SENSOR_OBSTACLE 3 // IR Sensor for obstacle detection
-#define RELAY_MOTOR 4        // Relay for Garage Door Motor
 
-#define PIR_SENSOR_OUTSIDE 6 // PIR sensor outside Room 1 (for opening door)
-#define PIR_SENSOR_INSIDE 7  // PIR sensor inside Room 1 (for light control)
-#define LDR_SENSOR A0        // LDR Sensor for darkness detection
-#define ROOM_LIGHT 8         // Relay for Room 1 light
+// PIN
+#define IR_PIN 2
+#define SERVO_PIN 9
+#define LDR_PIN A0
+#define LED_PIN 13            
+#define DHT_PIN 4
 
-#define DHTPIN 9             // DHT22 Humidity Sensor
-#define DHTTYPE DHT11
-DHT dht(DHTPIN, DHTTYPE);
-#define FAN 10               // Relay for Fan control
+#define DHTTYPE DHT22
+DHT dht(DHT_PIN, DHTTYPE);
+
+Servo garageServo;
+
+bool doorOpen = false;
+unsigned long lastDetectedTime = 0;
+const unsigned long CLOSE_DELAY = 4000; // 4 seconds delay
 
 void setup() {
-    Serial.begin(115200);
-    dht.begin();
+  pinMode(IR_PIN, INPUT);
+  pinMode(LED_PIN, OUTPUT);
 
-    pinMode(IR_SENSOR_VEHICLE, INPUT);
-    pinMode(IR_SENSOR_OBSTACLE, INPUT);
-    pinMode(PIR_SENSOR_OUTSIDE, INPUT);
-    pinMode(PIR_SENSOR_INSIDE, INPUT);
-    pinMode(LDR_SENSOR, INPUT);
+  garageServo.attach(SERVO_PIN);
+  garageServo.write(0); // Start closed
 
-    pinMode(RELAY_MOTOR, OUTPUT);
-    pinMode(ROOM_LIGHT, OUTPUT);
-    pinMode(FAN, OUTPUT);
-
-    digitalWrite(RELAY_MOTOR, LOW);
-    digitalWrite(ROOM_LIGHT, LOW);
-    digitalWrite(FAN, LOW);
+  Serial.begin(9600);
+  delay(2000); 
+  dht.begin();
 }
 
+
 void loop() {
-    // *Garage Control*
-    if (digitalRead(IR_SENSOR_VEHICLE) == LOW) {
-        digitalWrite(RELAY_MOTOR, HIGH);
-        Serial.println("Vehicle detected! Opening garage door...");
-    } else {
-        digitalWrite(RELAY_MOTOR, LOW);
-    }
+  int irValue = digitalRead(IR_PIN);
+  int ldrValue = analogRead(LDR_PIN);
+  float temperature = dht.readTemperature();
 
-    if (digitalRead(IR_SENSOR_OBSTACLE) == LOW) {
-        Serial.println("Obstacle detected! Stopping garage door.");
+  // Garage: Garage Door (IR + Servo)
+ if (irValue == LOW) {
+    garageServo.write(180);
+    doorOpen = true;
+    lastDetectedTime = millis();
+    Serial.println("Garage: Object Detected - Shutter OPENED to 180°");
+  } else {
+    if (doorOpen && (millis() - lastDetectedTime >= CLOSE_DELAY)) {
+      garageServo.write(0);
+      doorOpen = false;
+      Serial.println("Garage: No Object for 4s - Shutter CLOSED to 0°");
     }
+  }
+  // Room 1: LED Control via LDR
+ 
+  if (ldrValue < 700) {
+    digitalWrite(LED_PIN, HIGH);
+    Serial.println("Room1: Dark - LED ON");
+  } else {
+    digitalWrite(LED_PIN, LOW);
+    Serial.println("Room1: Bright - LED OFF");
+  }
 
-    //  *Room 1 Automation*
-    if (digitalRead(PIR_SENSOR_OUTSIDE) == HIGH) {
-        Serial.println("Motion detected outside! Opening Room 1 door.");
-    }
+  // Room 2: Fan Suggestion via Temperature
+  if (isnan(temperature)) {
+    Serial.println("Room2: Normal Temperature - Fan not needed");
+  } else if (temperature >= 30) {
+    Serial.print("Room3: Hot (");
+    Serial.print(temperature);
+    Serial.println("°C) - Suggest turning ON Fan");
+  }
 
-    int ldrValue = analogRead(LDR_SENSOR);
-    if (digitalRead(PIR_SENSOR_INSIDE) == HIGH && ldrValue < 500) {
-        digitalWrite(ROOM_LIGHT, HIGH);
-        Serial.println("Motion detected inside & it's dark! Turning ON Room 1 light.");
-    } else {
-        digitalWrite(ROOM_LIGHT, LOW);
-        Serial.println("Room 1 conditions not met! Turning OFF light.");
-    }
-
-    // *Room 2 Fan Control Based on Humidity*
-    float humidity = dht.readHumidity();
-    if (humidity > 60) {
-        digitalWrite(FAN, HIGH);
-        Serial.println("Humidity High! Turning ON fan.");
-    } else {
-        digitalWrite(FAN, LOW);
-        Serial.println("Humidity Low! Turning OFF fan.");
-    }
-
-    delay(5000);
+  delay(2000);
 }
